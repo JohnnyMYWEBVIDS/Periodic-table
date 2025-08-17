@@ -101,6 +101,11 @@ header{
 }
 .card .number{ font-size:12px; opacity:.8; margin-bottom:6px }
 .card .name{ font-size:14px; font-weight:700; }
+.card .thumb{
+  width:90px; height:56px; object-fit:contain; margin:8px auto 4px; display:block;
+  border-radius:10px; border:2px solid #aab7c2; background:#fff;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.1);
+}
 
 /* Category tints (still skeuo) */
 .cat-alkali{ background:linear-gradient(#f9e6e6,#e9a7a7) }
@@ -203,183 +208,250 @@ footer{ text-align:center; padding:14px; color:#204459; font-size:12px; opacity:
 <footer>Vintage Apple skeuomorphic UI • grid, search, sort, wiki popups, created by Johnny Patrick</footer>
 
 <script>
-// Complete ELEMENTS array with all 118 elements, no icons
-const ELEMENTS=[
-  {n:1,symbol:"H",name:"Hydrogen",category:"reactive-nm"},
-  {n:2,symbol:"He",name:"Helium",category:"noble"},
-  {n:3,symbol:"Li",name:"Lithium",category:"alkali"},
-  {n:4,symbol:"Be",name:"Beryllium",category:"alkaline"},
-  {n:5,symbol:"B",name:"Boron",category:"metalloid"},
-  {n:6,symbol:"C",name:"Carbon",category:"reactive-nm"},
-  {n:7,symbol:"N",name:"Nitrogen",category:"reactive-nm"},
-  {n:8,symbol:"O",name:"Oxygen",category:"reactive-nm"},
-  {n:9,symbol:"F",name:"Fluorine",category:"reactive-nm"},
-  {n:10,symbol:"Ne",name:"Neon",category:"noble"},
-  {n:11,symbol:"Na",name:"Sodium",category:"alkali"},
-  {n:12,symbol:"Mg",name:"Magnesium",category:"alkaline"},
-  {n:13,symbol:"Al",name:"Aluminium",category:"post-transition"},
-  {n:14,symbol:"Si",name:"Silicon",category:"metalloid"},
-  {n:15,symbol:"P",name:"Phosphorus",category:"reactive-nm"},
-  {n:16,symbol:"S",name:"Sulfur",category:"reactive-nm"},
-  {n:17,symbol:"Cl",name:"Chlorine",category:"reactive-nm"},
-  {n:18,symbol:"Ar",name:"Argon",category:"noble"},
-  {n:19,symbol:"K",name:"Potassium",category:"alkali"},
-  {n:20,symbol:"Ca",name:"Calcium",category:"alkaline"},
-  {n:21,symbol:"Sc",name:"Scandium",category:"transition"},
-  {n:22,symbol:"Ti",name:"Titanium",category:"transition"},
-  {n:23,symbol:"V",name:"Vanadium",category:"transition"},
-  {n:24,symbol:"Cr",name:"Chromium",category:"transition"},
-  {n:25,symbol:"Mn",name:"Manganese",category:"transition"},
-  {n:26,symbol:"Fe",name:"Iron",category:"transition"},
-  {n:27,symbol:"Co",name:"Cobalt",category:"transition"},
-  {n:28,symbol:"Ni",name:"Nickel",category:"transition"},
-  {n:29,symbol:"Cu",name:"Copper",category:"transition"},
-  {n:30,symbol:"Zn",name:"Zinc",category:"transition"},
-  {n:31,symbol:"Ga",name:"Gallium",category:"post-transition"},
-  {n:32,symbol:"Ge",name:"Germanium",category:"metalloid"},
-  {n:33,symbol:"As",name:"Arsenic",category:"metalloid"},
-  {n:34,symbol:"Se",name:"Selenium",category:"reactive-nm"},
-  {n:35,symbol:"Br",name:"Bromine",category:"reactive-nm"},
-  {n:36,symbol:"Kr",name:"Krypton",category:"noble"},
-  {n:37,symbol:"Rb",name:"Rubidium",category:"alkali"},
-  {n:38,symbol:"Sr",name:"Strontium",category:"alkaline"},
-  {n:39,symbol:"Y",name:"Yttrium",category:"transition"},
-  {n:40,symbol:"Zr",name:"Zirconium",category:"transition"},
-  {n:41,symbol:"Nb",name:"Niobium",category:"transition"},
-  {n:42,symbol:"Mo",name:"Molybdenum",category:"transition"},
-  {n:43,symbol:"Tc",name:"Technetium",category:"transition"},
-  {n:44,symbol:"Ru",name:"Ruthenium",category:"transition"},
-  {n:45,symbol:"Rh",name:"Rhodium",category:"transition"},
-  {n:46,symbol:"Pd",name:"Palladium",category:"transition"},
-  {n:47,symbol:"Ag",name:"Silver",category:"transition"},
-  {n:48,symbol:"Cd",name:"Cadmium",category:"transition"},
-  {n:49,symbol:"In",name:"Indium",category:"post-transition"},
-  {n:50,symbol:"Sn",name:"Tin",category:"post-transition"},
-  {n:51,symbol:"Sb",name:"Antimony",category:"metalloid"},
-  {n:52,symbol:"Te",name:"Tellurium",category:"metalloid"},
-  {n:53,symbol:"I",name:"Iodine",category:"reactive-nm"},
-  {n:54,symbol:"Xe",name:"Xenon",category:"noble"},
-  {n:55,symbol:"Cs",name:"Cesium",category:"alkali"},
-  {n:56,symbol:"Ba",name:"Barium",category:"alkaline"},
-  {n:57,symbol:"La",name:"Lanthanum",category:"lanthanide"},
-  {n:58,symbol:"Ce",name:"Cerium",category:"lanthanide"},
-  {n:59,symbol:"Pr",name:"Praseodymium",category:"lanthanide"},
-  {n:60,symbol:"Nd",name:"Neodymium",category:"lanthanide"},
-  {n:61,symbol:"Pm",name:"Promethium",category:"lanthanide"},
-  {n:62,symbol:"Sm",name:"Samarium",category:"lanthanide"},
-  {n:63,symbol:"Eu",name:"Europium",category:"lanthanide"},
-  {n:64,symbol:"Gd",name:"Gadolinium",category:"lanthanide"},
-  {n:65,symbol:"Tb",name:"Terbium",category:"lanthanide"},
-  {n:66,symbol:"Dy",name:"Dysprosium",category:"lanthanide"},
-  {n:67,symbol:"Ho",name:"Holmium",category:"lanthanide"},
-  {n:68,symbol:"Er",name:"Erbium",category:"lanthanide"},
-  {n:69,symbol:"Tm",name:"Thulium",category:"lanthanide"},
-  {n:70,symbol:"Yb",name:"Ytterbium",category:"lanthanide"},
-  {n:71,symbol:"Lu",name:"Lutetium",category:"lanthanide"},
-  {n:72,symbol:"Hf",name:"Hafnium",category:"transition"},
-  {n:73,symbol:"Ta",name:"Tantalum",category:"transition"},
-  {n:74,symbol:"W",name:"Tungsten",category:"transition"},
-  {n:75,symbol:"Re",name:"Rhenium",category:"transition"},
-  {n:76,symbol:"Os",name:"Osmium",category:"transition"},
-  {n:77,symbol:"Ir",name:"Iridium",category:"transition"},
-  {n:78,symbol:"Pt",name:"Platinum",category:"transition"},
-  {n:79,symbol:"Au",name:"Gold",category:"transition"},
-  {n:80,symbol:"Hg",name:"Mercury",category:"transition"},
-  {n:81,symbol:"Tl",name:"Thallium",category:"post-transition"},
-  {n:82,symbol:"Pb",name:"Lead",category:"post-transition"},
-  {n:83,symbol:"Bi",name:"Bismuth",category:"post-transition"},
-  {n:84,symbol:"Po",name:"Polonium",category:"metalloid"},
-  {n:85,symbol:"At",name:"Astatine",category:"metalloid"},
-  {n:86,symbol:"Rn",name:"Radon",category:"noble"},
-  {n:87,symbol:"Fr",name:"Francium",category:"alkali"},
-  {n:88,symbol:"Ra",name:"Radium",category:"alkaline"},
-  {n:89,symbol:"Ac",name:"Actinium",category:"actinide"},
-  {n:90,symbol:"Th",name:"Thorium",category:"actinide"},
-  {n:91,symbol:"Pa",name:"Protactinium",category:"actinide"},
-  {n:92,symbol:"U",name:"Uranium",category:"actinide"},
-  {n:93,symbol:"Np",name:"Neptunium",category:"actinide"},
-  {n:94,symbol:"Pu",name:"Plutonium",category:"actinide"},
-  {n:95,symbol:"Am",name:"Americium",category:"actinide"},
-  {n:96,symbol:"Cm",name:"Curium",category:"actinide"},
-  {n:97,symbol:"Bk",name:"Berkelium",category:"actinide"},
-  {n:98,symbol:"Cf",name:"Californium",category:"actinide"},
-  {n:99,symbol:"Es",name:"Einsteinium",category:"actinide"},
-  {n:100,symbol:"Fm",name:"Fermium",category:"actinide"},
-  {n:101,symbol:"Md",name:"Mendelevium",category:"actinide"},
-  {n:102,symbol:"No",name:"Nobelium",category:"actinide"},
-  {n:103,symbol:"Lr",name:"Lawrencium",category:"actinide"},
-  {n:104,symbol:"Rf",name:"Rutherfordium",category:"transition"},
-  {n:105,symbol:"Db",name:"Dubnium",category:"transition"},
-  {n:106,symbol:"Sg",name:"Seaborgium",category:"transition"},
-  {n:107,symbol:"Bh",name:"Bohrium",category:"transition"},
-  {n:108,symbol:"Hs",name:"Hassium",category:"transition"},
-  {n:109,symbol:"Mt",name:"Meitnerium",category:"transition"},
-  {n:110,symbol:"Ds",name:"Darmstadtium",category:"transition"},
-  {n:111,symbol:"Rg",name:"Roentgenium",category:"transition"},
-  {n:112,symbol:"Cn",name:"Copernicium",category:"transition"},
-  {n:113,symbol:"Nh",name:"Nihonium",category:"post-transition"},
-  {n:114,symbol:"Fl",name:"Flerovium",category:"post-transition"},
-  {n:115,symbol:"Mc",name:"Moscovium",category:"post-transition"},
-  {n:116,symbol:"Lv",name:"Livermorium",category:"post-transition"},
-  {n:117,symbol:"Ts",name:"Tennessine",category:"reactive-nm"},
-  {n:118,symbol:"Og",name:"Oganesson",category:"noble"},
+/*** Minimal element dataset (118) with category + icon filename (optional). 
+  icon path = icons/<Symbol>.png (falls back to placeholder.png)
+  category keys (for filter + tint CSS):
+    alkali, alkaline, transition, post-transition, metalloid, reactive-nm, noble, lanthanide, actinide, unknown
+***/
+const ELEMENTS = [
+  {n:1,  symbol:"H",  name:"Hydrogen", category:"reactive-nm"},
+  {n:2,  symbol:"He", name:"Helium", category:"noble"},
+  {n:3,  symbol:"Li", name:"Lithium", category:"alkali"},
+  {n:4,  symbol:"Be", name:"Beryllium", category:"alkaline"},
+  {n:5,  symbol:"B",  name:"Boron", category:"metalloid"},
+  {n:6,  symbol:"C",  name:"Carbon", category:"reactive-nm"},
+  {n:7,  symbol:"N",  name:"Nitrogen", category:"reactive-nm"},
+  {n:8,  symbol:"O",  name:"Oxygen", category:"reactive-nm"},
+  {n:9,  symbol:"F",  name:"Fluorine", category:"reactive-nm"},
+  {n:10, symbol:"Ne", name:"Neon", category:"noble"},
+  {n:11, symbol:"Na", name:"Sodium", category:"alkali"},
+  {n:12, symbol:"Mg", name:"Magnesium", category:"alkaline"},
+  {n:13, symbol:"Al", name:"Aluminium", category:"post-transition"},
+  {n:14, symbol:"Si", name:"Silicon", category:"metalloid"},
+  {n:15, symbol:"P",  name:"Phosphorus", category:"reactive-nm"},
+  {n:16, symbol:"S",  name:"Sulfur", category:"reactive-nm"},
+  {n:17, symbol:"Cl", name:"Chlorine", category:"reactive-nm"},
+  {n:18, symbol:"Ar", name:"Argon", category:"noble"},
+  {n:19, symbol:"K",  name:"Potassium", category:"alkali"},
+  {n:20, symbol:"Ca", name:"Calcium", category:"alkaline"},
+  {n:21, symbol:"Sc", name:"Scandium", category:"transition"},
+  {n:22, symbol:"Ti", name:"Titanium", category:"transition"},
+  {n:23, symbol:"V",  name:"Vanadium", category:"transition"},
+  {n:24, symbol:"Cr", name:"Chromium", category:"transition"},
+  {n:25, symbol:"Mn", name:"Manganese", category:"transition"},
+  {n:26, symbol:"Fe", name:"Iron", category:"transition"},
+  {n:27, symbol:"Co", name:"Cobalt", category:"transition"},
+  {n:28, symbol:"Ni", name:"Nickel", category:"transition"},
+  {n:29, symbol:"Cu", name:"Copper", category:"transition"},
+  {n:30, symbol:"Zn", name:"Zinc", category:"transition"},
+  {n:31, symbol:"Ga", name:"Gallium", category:"post-transition"},
+  {n:32, symbol:"Ge", name:"Germanium", category:"metalloid"},
+  {n:33, symbol:"As", name:"Arsenic", category:"metalloid"},
+  {n:34, symbol:"Se", name:"Selenium", category:"reactive-nm"},
+  {n:35, symbol:"Br", name:"Bromine", category:"reactive-nm"},
+  {n:36, symbol:"Kr", name:"Krypton", category:"noble"},
+  {n:37, symbol:"Rb", name:"Rubidium", category:"alkali"},
+  {n:38, symbol:"Sr", name:"Strontium", category:"alkaline"},
+  {n:39, symbol:"Y",  name:"Yttrium", category:"transition"},
+  {n:40, symbol:"Zr", name:"Zirconium", category:"transition"},
+  {n:41, symbol:"Nb", name:"Niobium", category:"transition"},
+  {n:42, symbol:"Mo", name:"Molybdenum", category:"transition"},
+  {n:43, symbol:"Tc", name:"Technetium", category:"transition"},
+  {n:44, symbol:"Ru", name:"Ruthenium", category:"transition"},
+  {n:45, symbol:"Rh", name:"Rhodium", category:"transition"},
+  {n:46, symbol:"Pd", name:"Palladium", category:"transition"},
+  {n:47, symbol:"Ag", name:"Silver", category:"transition"},
+  {n:48, symbol:"Cd", name:"Cadmium", category:"transition"},
+  {n:49, symbol:"In", name:"Indium", category:"post-transition"},
+  {n:50, symbol:"Sn", name:"Tin", category:"post-transition"},
+  {n:51, symbol:"Sb", name:"Antimony", category:"metalloid"},
+  {n:52, symbol:"Te", name:"Tellurium", category:"metalloid"},
+  {n:53, symbol:"I",  name:"Iodine", category:"reactive-nm"},
+  {n:54, symbol:"Xe", name:"Xenon", category:"noble"},
+  {n:55, symbol:"Cs", name:"Cesium", category:"alkali"},
+  {n:56, symbol:"Ba", name:"Barium", category:"alkaline"},
+  {n:57, symbol:"La", name:"Lanthanum", category:"lanthanide"},
+  {n:58, symbol:"Ce", name:"Cerium", category:"lanthanide"},
+  {n:59, symbol:"Pr", name:"Praseodymium", category:"lanthanide"},
+  {n:60, symbol:"Nd", name:"Neodymium", category:"lanthanide"},
+  {n:61, symbol:"Pm", name:"Promethium", category:"lanthanide"},
+  {n:62, symbol:"Sm", name:"Samarium", category:"lanthanide"},
+  {n:63, symbol:"Eu", name:"Europium", category:"lanthanide"},
+  {n:64, symbol:"Gd", name:"Gadolinium", category:"lanthanide"},
+  {n:65, symbol:"Tb", name:"Terbium", category:"lanthanide"},
+  {n:66, symbol:"Dy", name:"Dysprosium", category:"lanthanide"},
+  {n:67, symbol:"Ho", name:"Holmium", category:"lanthanide"},
+  {n:68, symbol:"Er", name:"Erbium", category:"lanthanide"},
+  {n:69, symbol:"Tm", name:"Thulium", category:"lanthanide"},
+  {n:70, symbol:"Yb", name:"Ytterbium", category:"lanthanide"},
+  {n:71, symbol:"Lu", name:"Lutetium", category:"lanthanide"},
+  {n:72, symbol:"Hf", name:"Hafnium", category:"transition"},
+  {n:73, symbol:"Ta", name:"Tantalum", category:"transition"},
+  {n:74, symbol:"W",  name:"Tungsten", category:"transition"},
+  {n:75, symbol:"Re", name:"Rhenium", category:"transition"},
+  {n:76, symbol:"Os", name:"Osmium", category:"transition"},
+  {n:77, symbol:"Ir", name:"Iridium", category:"transition"},
+  {n:78, symbol:"Pt", name:"Platinum", category:"transition"},
+  {n:79, symbol:"Au", name:"Gold", category:"transition"},
+  {n:80, symbol:"Hg", name:"Mercury", category:"transition"},
+  {n:81, symbol:"Tl", name:"Thallium", category:"post-transition"},
+  {n:82, symbol:"Pb", name:"Lead", category:"post-transition"},
+  {n:83, symbol:"Bi", name:"Bismuth", category:"post-transition"},
+  {n:84, symbol:"Po", name:"Polonium", category:"post-transition"},
+  {n:85, symbol:"At", name:"Astatine", category:"reactive-nm"},
+  {n:86, symbol:"Rn", name:"Radon", category:"noble"},
+  {n:87, symbol:"Fr", name:"Francium", category:"alkali"},
+  {n:88, symbol:"Ra", name:"Radium", category:"alkaline"},
+  {n:89, symbol:"Ac", name:"Actinium", category:"actinide"},
+  {n:90, symbol:"Th", name:"Thorium", category:"actinide"},
+  {n:91, symbol:"Pa", name:"Protactinium", category:"actinide"},
+  {n:92, symbol:"U",  name:"Uranium", category:"actinide"},
+  {n:93, symbol:"Np", name:"Neptunium", category:"actinide"},
+  {n:94, symbol:"Pu", name:"Plutonium", category:"actinide"},
+  {n:95, symbol:"Am", name:"Americium", category:"actinide"},
+  {n:96, symbol:"Cm", name:"Curium", category:"actinide"},
+  {n:97, symbol:"Bk", name:"Berkelium", category:"actinide"},
+  {n:98, symbol:"Cf", name:"Californium", category:"actinide"},
+  {n:99, symbol:"Es", name:"Einsteinium", category:"actinide"},
+  {n:100,symbol:"Fm", name:"Fermium", category:"actinide"},
+  {n:101,symbol:"Md", name:"Mendelevium", category:"actinide"},
+  {n:102,symbol:"No", name:"Nobelium", category:"actinide"},
+  {n:103,symbol:"Lr", name:"Lawrencium", category:"actinide"},
+  {n:104,symbol:"Rf", name:"Rutherfordium", category:"transition"},
+  {n:105,symbol:"Db", name:"Dubnium", category:"transition"},
+  {n:106,symbol:"Sg", name:"Seaborgium", category:"transition"},
+  {n:107,symbol:"Bh", name:"Bohrium", category:"transition"},
+  {n:108,symbol:"Hs", name:"Hassium", category:"transition"},
+  {n:109,symbol:"Mt", name:"Meitnerium", category:"unknown"},
+  {n:110,symbol:"Ds", name:"Darmstadtium", category:"unknown"},
+  {n:111,symbol:"Rg", name:"Roentgenium", category:"unknown"},
+  {n:112,symbol:"Cn", name:"Copernicium", category:"post-transition"},
+  {n:113,symbol:"Nh", name:"Nihonium", category:"unknown"},
+  {n:114,symbol:"Fl", name:"Flerovium", category:"post-transition"},
+  {n:115,symbol:"Mc", name:"Moscovium", category:"unknown"},
+  {n:116,symbol:"Lv", name:"Livermorium", category:"post-transition"},
+  {n:117,symbol:"Ts", name:"Tennessine", category:"reactive-nm"},
+  {n:118,symbol:"Og", name:"Oganesson", category:"noble"}
 ];
 
-const grid=document.getElementById('grid');
-ELEMENTS.forEach(el=>{
-  const div=document.createElement('div');
-  div.className=`card cat-${el.category}`;
-  div.innerHTML=`<div class="number">${el.n}</div>
-                 <div class="symbol">${el.symbol}</div>
-                 <div class="name">${el.name}</div>`;
-  div.onclick=()=>showInfo(el);
-  grid.appendChild(div);
+// category -> CSS card class
+const CAT_CLASS = {
+  "alkali":"cat-alkali",
+  "alkaline":"cat-alkaline",
+  "transition":"cat-transition",
+  "post-transition":"cat-post-transition",
+  "metalloid":"cat-metalloid",
+  "reactive-nm":"cat-reactive-nm",
+  "noble":"cat-noble",
+  "lanthanide":"cat-lanthanide",
+  "actinide":"cat-actinide",
+  "unknown":"cat-unknown"
+};
+
+const grid = document.getElementById('grid');
+const info = document.getElementById('info');
+const titleEl = document.getElementById('title');
+const metaEl = document.getElementById('meta');
+const bioEl = document.getElementById('bio');
+const history = document.getElementById('history');
+
+let current = [...ELEMENTS].sort((a,b)=>a.n-b.n);
+
+function iconPath(sym){ return `icons/${sym}.png`; }
+
+function render(list){
+  grid.innerHTML = '';
+  list.forEach(el=>{
+    const card = document.createElement('div');
+    card.className = `card ${CAT_CLASS[el.category]||''}`;
+    card.innerHTML = `
+      <div class="number">#${el.n}</div>
+      <div class="symbol">${el.symbol}</div>
+     
+      <div class="name">${el.name}</div>
+    `;
+    card.addEventListener('click', ()=>openElement(el));
+    grid.appendChild(card);
+  });
+}
+
+function openElement(el){
+  titleEl.textContent = `${el.name} (${el.symbol})`;
+  metaEl.textContent = `Atomic number: ${el.n} • Category: ${prettyCategory(el.category)}`;
+  bioEl.textContent = 'Loading…';
+  info.style.display = 'block';
+
+  // Wikipedia summary
+  fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(el.name)}`)
+    .then(r=>r.json())
+    .then(d=>{
+      if(d && (d.extract_html || d.extract)){
+        const text = (d.extract||'').trim();
+        if(text.length < 60){
+          bioEl.innerHTML = defaultBlurb(el);
+        }else{
+          bioEl.innerHTML = d.extract_html || d.extract;
+        }
+      }else{
+        bioEl.innerHTML = defaultBlurb(el);
+      }
+    })
+    .catch(()=>{ bioEl.innerHTML = defaultBlurb(el); });
+}
+
+function defaultBlurb(el){
+  return `${el.name} is element #${el.n} on the periodic table and is classified as ${prettyArticle(el.category)}.`;
+}
+function prettyCategory(key){
+  const map={
+    "alkali":"Alkali metal","alkaline":"Alkaline earth metal","transition":"Transition metal",
+    "post-transition":"Post-transition metal","metalloid":"Metalloid","reactive-nm":"Reactive nonmetal",
+    "noble":"Noble gas","lanthanide":"Lanthanide","actinide":"Actinide","unknown":"Unknown/undetermined"
+  };
+  return map[key]||'Unknown';
+}
+function prettyArticle(key){
+  const text = prettyCategory(key);
+  const vowel = /^[AEIOU]/i.test(text);
+  return (vowel?'an ':'a ')+text.toLowerCase();
+}
+
+/* Search + sort + filter */
+const search = document.getElementById('search');
+const sortSel = document.getElementById('sort');
+const filterSel = document.getElementById('filter');
+
+function applyControls(){
+  const q = search.value.trim().toLowerCase();
+  const cat = filterSel.value;
+  let list = [...ELEMENTS];
+  if(cat!=='all') list = list.filter(e=>e.category===cat);
+  if(q){
+    list = list.filter(e =>
+      e.name.toLowerCase().includes(q) || e.symbol.toLowerCase().includes(q)
+    );
+  }
+  if(sortSel.value==='alpha') list.sort((a,b)=>a.name.localeCompare(b.name));
+  else list.sort((a,b)=>a.n-b.n);
+  current = list;
+  render(current);
+}
+['input','change'].forEach(evt=>{
+  search.addEventListener(evt,applyControls);
+  sortSel.addEventListener(evt,applyControls);
+  filterSel.addEventListener(evt,applyControls);
 });
 
-function showInfo(el){
-  const panel=document.getElementById('info');
-  document.getElementById('title').textContent=el.name+' ('+el.symbol+')';
-  document.getElementById('meta').textContent='Atomic Number: '+el.n+' • Category: '+el.category;
-  // Fetch Wikipedia intro
-  fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${el.name}`)
-    .then(r=>r.json())
-    .then(j=>{
-      document.getElementById('bio').textContent=j.extract || 'Bio not available.';
-    }).catch(()=>document.getElementById('bio').textContent='Bio not available.');
-  panel.style.display='block';
-}
-function closeInfo(){ document.getElementById('info').style.display='none' }
-function showHistory(){ document.getElementById('history').style.display='block' }
-function closeHistory(){ document.getElementById('history').style.display='none' }
+/* Panels */
+function closeInfo(){ info.style.display='none'; }
+function showHistory(){ history.style.display='block'; }
+function closeHistory(){ history.style.display='none'; }
+window.closeInfo = closeInfo;
+window.showHistory = showHistory;
+window.closeHistory = closeHistory;
 
-// Search & filter
-document.getElementById('search').oninput=filterGrid;
-document.getElementById('filter').onchange=filterGrid;
-document.getElementById('sort').onchange=sortGrid;
-
-function filterGrid(){
-  const text=document.getElementById('search').value.toLowerCase();
-  const cat=document.getElementById('filter').value;
-  Array.from(grid.children).forEach(card=>{
-    const name=card.querySelector('.name').textContent.toLowerCase();
-    const symbol=card.querySelector('.symbol').textContent.toLowerCase();
-    const show=(name.includes(text)||symbol.includes(text)) && (cat==='all'||card.className.includes('cat-'+cat));
-    card.style.display=show?'block':'none';
-  });
-}
-
-function sortGrid(){
-  const type=document.getElementById('sort').value;
-  const arr=Array.from(grid.children);
-  arr.sort((a,b)=>{
-    if(type==='alpha'){
-      return a.querySelector('.name').textContent.localeCompare(b.querySelector('.name').textContent);
-    }else{
-      return parseInt(a.querySelector('.number').textContent)-parseInt(b.querySelector('.number').textContent);
-    }
-  });
-  arr.forEach(c=>grid.appendChild(c));
-}
+/* Init */
+render(current);
 </script>
 </body>
 </html>
